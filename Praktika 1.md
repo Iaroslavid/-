@@ -79,9 +79,13 @@ sudo cp "$file"
 ## **Задание №6**
 '''
 import os
+
 def check_comment_in_first_line(file_path):
+
     try:
+    
         with open(file_path, 'r', encoding='utf-8') as file:
+        
             first_line = file.readline().strip()
             return is_comment(first_line, file_path)
     except Exception as e:
@@ -89,27 +93,37 @@ def check_comment_in_first_line(file_path):
         return False
 
 def is_comment(line, file_path):
+
     ext = os.path.splitext(file_path)[1]
     if ext == '.c':
+    
         return line.startswith('//')
     elif ext == '.py':
+    
         return line.startswith('#')
     elif ext == '.js':
+    
         return line.startswith('//')
     else:
+    
         return False
 
 def main(directory):
+
     for root, dirs, files in os.walk(directory):
         for file in files:
+        
             if file.endswith(('.c', '.js', '.py')):
+            
                 file_path = os.path.join(root, file)
                 if check_comment_in_first_line(file_path):
+                
                     print(f"Комментарий найден в файле: {file_path}")
                 else:
                     print(f"Комментарий не найден в файле: {file_path}")
 
 if __name__ == '__main__':
+
     # Замените '.' на желаемую директорию для проверки
     main('.')
     
@@ -124,37 +138,50 @@ if __name__ == '__main__':
 ## Задание №7
 '''
 import os
+
 import hashlib
 
 def hash_file(file_path):
-    """ Возвращает хеш содержимого файла. """
+
     hash_MD5 = hashlib.md5() 
     try:
+    
         with open(file_path, 'rb') as file:
+        
             for chunk in iter(lambda: file.read(4096), b""):
+            
                 hash_MD5.update(chunk)
         return hash_MD5.hexdigest()
     except Exception as e:
+    
         print(f"Ошибка чтения файла {file_path}: {e}")
         return None
 
 def find_duplicates(directory):
+
     files_by_hash = {}  
     for root, _, files in os.walk(directory):
+    
         for file in files:
+        
             file_path = os.path.join(root, file)
             file_hash = hash_file(file_path)
             if file_hash:
+            
                 if file_hash in files_by_hash:
+                
                     files_by_hash[file_hash].append(file_path)
                 else:
+                
                     files_by_hash[file_hash] = [file_path]
     return {k: v for k, v in files_by_hash.items() if len(v) > 1}
     
 def main():
+
     directory = input("Введите путь к директории для поиска дубликатов: ")
     duplicates = find_duplicates(directory)
     if duplicates:
+    
         print("Найдены дубликаты файлов:")
         for file_hash, files in duplicates.items():
             print(f"Хеш: {file_hash}")
@@ -176,14 +203,19 @@ if __name__ == '__main__':
 '''
 import sys
 def replace_spaces_with_tab(input_file, output_file):
+
     try:
+    
         with open(input_file, 'r') as infile:
+        
             content = infile.read()
         content = content.replace(' ' * 4, '\t')
         with open(output_file, 'w') as outfile:
+        
             outfile.write(content)      
         print(f"Файл '{input_file}' обработан и сохранен в '{output_file}'.")
     except Exception as e:
+    
         print(f"Произошла ошибка: {e}")
 
 if __name__ == '__main__':
@@ -208,30 +240,41 @@ if __name__ == '__main__':
 ## Задание №9
 '''
 import os
+
 import sys
 
 def find_empty_text_files(directory):
+
     try:
+    
         files = os.listdir(directory)
         empty_files = []
         for file in files:
+        
             if file.endswith('.txt'):
+            
                 file_path = os.path.join(directory, file)
                 if os.path.isfile(file_path) and os.path.getsize(file_path) == 0:
                     empty_files.append(file)
         if empty_files:
+        
             print("Пустые текстовые файлы:")
             for empty_file in empty_files:
+            
                 print(empty_file)
         else:
             print("Пустые текстовые файлы не найдены.")
     except Exception as e:
+    
         print(f"Произошла ошибка: {e}")
 
 if __name__ == '__main__':
+
     if len(sys.argv) != 2:
+    
         print("Использование: python find_empty_text_files.py <директория>")
     else:
+    
         directory = sys.argv[1]
         find_empty_text_files(directory)
         
@@ -252,19 +295,26 @@ import os
 import sys
 
 def find_empty_text_files(directory):
+
     try:
+    
         for filename in os.listdir(directory):
+        
             if filename.endswith('.txt'):
+            
                 file_path = os.path.join(directory, filename)
                 if os.path.isfile(file_path) and os.path.getsize(file_path) == 0:
                     print(filename)
     except Exception as e:
+    
         print(f"Произошла ошибка: {e}")
 
 if __name__ == "__main__":
+
     if len(sys.argv) != 2:
         print("Использование: python script.py <путь_к_директории>")
     else:
+    
         dir_path = sys.argv[1]
         find_empty_text_files(dir_path)
         
